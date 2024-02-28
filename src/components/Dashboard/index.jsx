@@ -1,7 +1,7 @@
 import "./style.css"
 import React, { useState } from 'react';
 
-const Dashboard = ({ darkModeSetting }) => {
+const Dashboard = ({ login }) => {
     const [darkMode, setDarkMode] = useState(getCurrentTheme());
 
     function getCurrentTheme() {
@@ -10,6 +10,7 @@ const Dashboard = ({ darkModeSetting }) => {
 
     return(
         <div className="dashboard">
+             <p>Welcome, {login}</p>
              <button>Переключить тему</button>
              <button>Выход</button>
         </div>    

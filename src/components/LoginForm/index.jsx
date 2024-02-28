@@ -1,8 +1,9 @@
 import "./style.css"
 import { useForm } from "react-hook-form";
+import React, { useState } from 'react';
 
-const LoginForm = ({ onSuccess }) => {
-    const {register, handleSubmit, formState: {errors}, getValues } = useForm({mode: 'onBlur'});
+const LoginForm = ({ onSuccess, setLogin }) => {
+    const {register, handleSubmit, formState: {errors} } = useForm({mode: 'onBlur'});
 
     const onSubmit = (data) =>  {
         console.log(data);
@@ -19,10 +20,12 @@ const LoginForm = ({ onSuccess }) => {
         })
         .then (response => response.json())
         .then (response => {
-            console.log(response)
+            console.log(response);
             alert(response.message);
 
             if(response.status == 1) {
+                console.log(data.login);
+                setLogin(data.login);
                 onSuccess();
             }
         })
