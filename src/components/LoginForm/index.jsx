@@ -24,7 +24,6 @@ const LoginForm = ({ onSuccess, setLogin }) => {
             alert(response.message);
 
             if(response.status == 1) {
-                console.log(data.login);
                 setLogin(data.login);
                 onSuccess();
             }
@@ -41,7 +40,11 @@ const LoginForm = ({ onSuccess, setLogin }) => {
                     ...register("login", {
                         required: 'Обязательное поле',
                         minLength: {value:6, message:"Минимум 6"},
-                        maxLength: {value:32, message:"Максимум 32"}
+                        maxLength: {value:32, message:"Максимум 32"},
+                        pattern: {
+                            value: /^[a-zA-Z0-9_]+$/ ,
+                            message: "Неправильный логин"
+                        }
                     })
                 }
             />

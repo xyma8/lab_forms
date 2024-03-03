@@ -63,7 +63,10 @@ const ContainerForm = ({onSuccess}) => {
                     ...register("email", {
                         required: 'Обязательное поле',
                         maxLength: {value:254, message:"Превышена длина email"},
-                        pattern: {value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ , message:"Неправильный email"}
+                        pattern: {
+                            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ ,
+                            message:"Неправильный email"
+                        }
                     })
                 }
             />
@@ -75,7 +78,11 @@ const ContainerForm = ({onSuccess}) => {
                     ...register("login", {
                         required: 'Обязательное поле',
                         minLength: {value:6, message:"Минимум 6"},
-                        maxLength: {value:32, message:"Максимум 32"}
+                        maxLength: {value:32, message:"Максимум 32"},
+                        pattern: {
+                            value: /^[a-zA-Z0-9_]+$/ ,
+                            message: "Неправильный логин"
+                        }
                     })
                 }
             />
