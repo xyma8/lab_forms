@@ -13,8 +13,7 @@ code {
 }
 
 /*light theme*/
-
-html[data-theme='dark'] {
+html[data-theme='light'] {
   --button-text-color: #252525;
   --button-background-color: #f9d4ff;
   

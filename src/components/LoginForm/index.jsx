@@ -1,9 +1,11 @@
 import "./style.css"
 import { useForm } from "react-hook-form";
 import React, { useState } from 'react';
+import { useTheme } from "../../hooks/use-theme"
 
-const LoginForm = ({ onSuccess, setLogin }) => {
+const LoginForm = ({ setLogin, onSuccess }) => {
     const {register, handleSubmit, formState: {errors} } = useForm({mode: 'onBlur'});
+    //const { theme, setTheme } = useTheme(); //проблема с пересеканием css
 
     const onSubmit = (data) =>  {
         console.log(data);

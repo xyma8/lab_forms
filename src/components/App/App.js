@@ -7,7 +7,7 @@ import Dashboard from "../Dashboard";
 
 function App() {
   const [step, setStep] = useState('register');
-  const [login, setLogin] = useState('') ;
+  const [login, setLogin] = useState('');
 
   const goToRegister = () => {
     setStep('register');
@@ -23,10 +23,6 @@ function App() {
     console.log('dashboard');
   };
 
-  const sLogin = () => {
-    setLogin('login');
-  }
-
 
   return (
     <div className="App">
@@ -40,7 +36,7 @@ function App() {
 
       {step === 'login' && (
         <div className="login-form">
-          <LoginForm onSuccess={goToDashboard} setLogin={setLogin} />
+          <LoginForm setLogin={setLogin}  onSuccess={goToDashboard} />
           <button onClick={goToRegister}>Нет аккаунта? Зарегистрировать</button>
         </div>
       )}
