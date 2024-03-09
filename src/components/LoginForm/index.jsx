@@ -1,7 +1,6 @@
 import "./style.css"
 import { useForm } from "react-hook-form";
 import React, { useState } from 'react';
-import { useTheme } from "../../hooks/use-theme"
 
 const LoginForm = ({ setLogin, onSuccess }) => {
     const {register, handleSubmit, formState: {errors} } = useForm({mode: 'onBlur'});
@@ -26,8 +25,7 @@ const LoginForm = ({ setLogin, onSuccess }) => {
             alert(response.message);
 
             if(response.status == 1) {
-                setLogin(data.login);
-                onSuccess();
+                onSuccess(data.login);
             }
         })
     }

@@ -1,4 +1,4 @@
-import "./style.css"
+import "./style.css";
 import { useForm } from "react-hook-form";
 
 const ContainerForm = ({onSuccess}) => {
