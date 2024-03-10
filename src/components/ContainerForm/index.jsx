@@ -23,7 +23,7 @@ const ContainerForm = ({onSuccess}) => {
             alert(response.message);
 
             if(response.status == 1){
-                onSuccess();
+                //onSuccess();nothing
             }
         })
     }

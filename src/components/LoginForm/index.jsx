@@ -21,11 +21,12 @@ const LoginForm = ({ setLogin, onSuccess }) => {
         })
         .then (response => response.json())
         .then (response => {
-            console.log(response);
-            alert(response.message);
+            //console.log(response);
+            alert(response.message.message);
 
             if(response.status == 1) {
-                onSuccess(data.login);
+                //console.log(response.message.token);
+                onSuccess(data.login, response.message.token);
             }
         })
     }

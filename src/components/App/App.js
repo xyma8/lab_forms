@@ -2,7 +2,7 @@ import "./App.css"
 import React, { useState } from 'react';
 import ContainerForm from "../ContainerForm";
 import LoginForm from "../LoginForm";
-import Dashboard from "../Dashboard";
+import Dashboard from "../DashboardPage";
 
 
 function App() {

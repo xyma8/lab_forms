@@ -1,12 +1,19 @@
 import "./style.css"
 import React, { useEffect } from 'react';
+import { useState } from "react";
 import { useTheme } from '../../hooks/use-theme';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
-const Dashboard = ({ login }) => {
+const DashboardPage = ({login}) => {
+    const navigate = useNavigate();
     const { theme, setTheme } = useTheme();
+    const {userData, setUserData} = useState();
+
     useEffect(() => {
-        
-        selectTheme(login);
+        getUserData();
+        //selectTheme(login);
+
       }, []); // Пустой массив зависимостей означает, что этот эффект выполняется только при монтировании компонента
 
     
@@ -62,6 +69,28 @@ const Dashboard = ({ login }) => {
         })
     }
 
+    function getUserData() {
+        fetch("http://formserver.ru/user/data/", {
+            method: 'GET',
+            headers: {
+                'Content-type' : 'application/json; charset=utf-8',
+                Authorization: `Bearer ${Cookies.get('token')}`
+            },
+        })
+        .then (response => response.json())
+        .then (response => {
+            console.log(response)
+
+            if(response.status == 1){
+                setUserData(response);
+            }
+            else{
+                navigate('/login');
+            }
+        })
+    }
+
+
     return(
         <div className="dashboard">
              <p>Welcome, {login}</p>
@@ -73,4 +102,4 @@ const Dashboard = ({ login }) => {
     )
 }
 
-export default Dashboard
+export default DashboardPage;
