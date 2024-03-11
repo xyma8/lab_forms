@@ -8,13 +8,19 @@ import Cookies from 'js-cookie';
 const DashboardPage = ({login}) => {
     const navigate = useNavigate();
     const { theme, setTheme } = useTheme();
-    const {userData, setUserData} = useState();
+    const [userData, setUserData] = useState(null);
 
     useEffect(() => {
         getUserData();
-        //selectTheme(login);
 
-      }, []); // Пустой массив зависимостей означает, что этот эффект выполняется только при монтировании компонента
+    }, []); // Пустой массив зависимостей означает, что этот эффект выполняется только при монтировании компонента
+
+    useEffect(() => {
+        if (userData) {
+            //этот эффект запустится после каждого обновления userData
+            selectTheme(userData.login);
+        }
+    }, [userData]);
 
     
     function toggleTheme() {
@@ -49,7 +55,8 @@ const DashboardPage = ({login}) => {
     }
 
     function exit() {
-        window.location.reload();
+        Cookies.remove('token');
+        navigate('/login');
     }
 
     function saveTheme(login) {
@@ -58,7 +65,7 @@ const DashboardPage = ({login}) => {
             header: {
                 'Content-type' : 'application/json; charset=utf-8',
             },
-            body: JSON.stringify({code: 2, login:login})
+            body: JSON.stringify({code:2, login:login})
         })
         .then (response => response.json())
         .then (response => {
@@ -70,12 +77,13 @@ const DashboardPage = ({login}) => {
     }
 
     function getUserData() {
+        /*
         fetch("http://formserver.ru/user/data/", {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-type' : 'application/json; charset=utf-8',
-                Authorization: `Bearer ${Cookies.get('token')}`
             },
+            body: JSON.stringify({token:Cookies.get('token')})
         })
         .then (response => response.json())
         .then (response => {
@@ -88,13 +96,40 @@ const DashboardPage = ({login}) => {
                 navigate('/login');
             }
         })
+        */
+
+        //проверяем есть ли токен в куках(конечно на сервере есть запасная проверка но тут лучше)
+        if (!Cookies.get('token')) { 
+            navigate('/login');
+        }
+
+        fetch("http://formserver.ru/user/data/", {
+            method: 'POST',
+            header: {
+                'Content-type' : 'application/json; charset=utf-8',
+            },
+            body: JSON.stringify({token:Cookies.get('token')})
+        })
+        .then (response => response.json())
+        .then (response => {
+          console.log(response);
+            if(response.status == 1) {
+                setUserData(response.message);
+            }
+            else{
+                exit();
+            }
+        })
     }
 
+    if (!userData) {
+        return <div>Loading...</div>;
+    }
 
     return(
         <div className="dashboard">
-             <p>Welcome, {login}</p>
-             <button onClick={() => saveTheme(login)}>
+             <p>Welcome, {userData.login}</p>
+             <button onClick={() => saveTheme(userData.login)}>
                 {theme === 'dark' ? 'Светлая тема' : 'Темная тема'}
              </button>
              <button onClick={() => exit()}>Выход</button>

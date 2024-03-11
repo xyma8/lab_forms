@@ -1,9 +1,14 @@
 import "./style.css";
+import { useState } from "react";
+import { useEffect } from 'react';
 import { useForm } from "react-hook-form";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const ContainerForm = ({onSuccess}) => {
     const {register, handleSubmit, formState: {errors}, getValues } = useForm({mode: 'onBlur'});
+    const [captcha, setCaptcha] = useState(null);
     
+
     const onSubmit = (data) =>  {
         console.log(data);
         sendDataRegistration(data);
@@ -24,6 +29,29 @@ const ContainerForm = ({onSuccess}) => {
 
             if(response.status == 1){
                 //onSuccess();nothing
+            }
+        })
+    }
+
+    function handleCaptchaChange(val) {
+        setCaptcha(val);
+        checkCaptcha();
+    }
+
+    function checkCaptcha() {
+        fetch("http://formserver.ru/recaptcha/", {
+            method: 'POST',
+            header: {
+                'Content-type' : 'application/json; charset=utf-8',
+            },
+            body: JSON.stringify({'g-recaptcha-response':captcha})
+        })
+        .then (response => response.text())
+        .then (response => {
+            console.log(response)
+
+            if(response.status == 1){
+                
             }
         })
     }
@@ -155,8 +183,9 @@ const ContainerForm = ({onSuccess}) => {
             </label>
             {errors?.acceptCB && (<div style={{ color: 'red', fontSize:'12px'}}>{errors.acceptCB.message}</div>)}
 
-
-            <button type="submit">Регистрация</button>
+            <ReCAPTCHA sitekey="6LfLkJUpAAAAACpHdRdR4FITqQQKPmCs21oJ8_2L"
+            onChange={handleCaptchaChange}/>
+            <button disabled={!captcha} type="submit">Регистрация</button>
         </form>
         
     )
