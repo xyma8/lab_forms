@@ -52,7 +52,10 @@ const ContainerForm = ({onSuccess}) => {
             console.log(response)
 
             if(response.status == 1){
-                
+                setCaptcha(true);
+            }
+            else{
+                setCaptcha(false);
             }
         })
     }
@@ -186,7 +189,8 @@ const ContainerForm = ({onSuccess}) => {
 
             <ReCAPTCHA sitekey="6LfLkJUpAAAAACpHdRdR4FITqQQKPmCs21oJ8_2L"
             onChange={checkCaptcha}/>
-            <button disabled={!captcha} type="submit">Регистрация</button>
+        
+            <button type="submit" >Регистрация</button>
         </form>
         
     )
