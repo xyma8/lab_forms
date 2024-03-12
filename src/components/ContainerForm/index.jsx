@@ -38,13 +38,14 @@ const ContainerForm = ({onSuccess}) => {
         checkCaptcha();
     }
 
-    function checkCaptcha() {
+    function checkCaptcha(val) {
+        console.log(val);
         fetch("http://formserver.ru/recaptcha/", {
             method: 'POST',
             header: {
                 'Content-type' : 'application/json; charset=utf-8',
             },
-            body: JSON.stringify({'g-recaptcha-response':captcha})
+            body: JSON.stringify({'g-recaptcha-response':val})
         })
         .then (response => response.text())
         .then (response => {
@@ -184,7 +185,7 @@ const ContainerForm = ({onSuccess}) => {
             {errors?.acceptCB && (<div style={{ color: 'red', fontSize:'12px'}}>{errors.acceptCB.message}</div>)}
 
             <ReCAPTCHA sitekey="6LfLkJUpAAAAACpHdRdR4FITqQQKPmCs21oJ8_2L"
-            onChange={handleCaptchaChange}/>
+            onChange={checkCaptcha}/>
             <button disabled={!captcha} type="submit">Регистрация</button>
         </form>
         

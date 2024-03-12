@@ -1,17 +1,20 @@
+html,
+#root
 .dashboard {
-    background-color: var(--background-color);
+    
 }
 
-button{
+.dashboard button{
     background-color: var(--button-background-color);
     color: var(--button-text-color);
 }
 
-p{
+.dashboard p{
     color: var(--text-color);
 }
 
-html{
+.dashboard {
+    min-height: 100vh;
     background-color: var(--background-color);
 }
 
