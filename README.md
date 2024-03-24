@@ -1,4 +1,4 @@
-This is frontend app
+This is a frontend app
 
 Backend on PHP: https://github.com/xyma8/lab_forms_backend_php
 
