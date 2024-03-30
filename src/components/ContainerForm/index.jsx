@@ -11,24 +11,37 @@ const ContainerForm = ({onSuccess}) => {
 
     const onSubmit = (data) =>  {
         console.log(data);
-        sendDataRegistration(data);
+        const user_data = {
+            name: data.name,
+            surname: data.surname,
+            email: data.email,
+            login: data.login,
+            password: data.password,
+            gender: parseInt(data.gender),
+            darktheme: 0,
+            token: ""
+        }
+        sendDataRegistration(user_data);
     }
 
     function sendDataRegistration(data) {
-        fetch("http://formserver.ru/registration/", {
+        fetch("http://localhost:8080/api/users/signup", {
             method: 'POST',
-            header: {
+            headers: {
                 'Content-type' : 'application/json; charset=utf-8',
             },
             body: JSON.stringify(data)
         })
-        .then (response => response.json())
         .then (response => {
-            console.log(response)
-            alert(response.message);
-
-            if(response.status == 1){
-                //onSuccess();nothing
+            console.log(response.status);
+            if(response.status == 201) {
+                alert('Registration success!')
+            }
+            else if(response.status==409) {
+                alert("This login is already taken!");
+            }
+            else{
+                alert("Error!");
             }
         })
     }
@@ -39,19 +52,17 @@ const ContainerForm = ({onSuccess}) => {
     }
 
     function checkCaptcha(val) {
-        console.log(val);
-        fetch("http://formserver.ru/recaptcha/", {
-            method: 'POST',
-            header: {
+        fetch("http://localhost:8080/api/recaptcha", {
+            method: 'GET',
+            headers: {
                 'Content-type' : 'application/json; charset=utf-8',
+                'token': val
             },
-            body: JSON.stringify({'g-recaptcha-response':val})
         })
-        .then (response => response.text())
         .then (response => {
             console.log(response)
 
-            if(response.status == 1){
+            if(response.status == 200){
                 setCaptcha(true);
             }
             else{
@@ -170,12 +181,12 @@ const ContainerForm = ({onSuccess}) => {
 
                 <div>                  
                 <label>
-                    <input type="radio" name="gender" value="m" checked='checked' {...register("gender")}/>
+                    <input type="radio" name="gender" value="0" checked='checked' {...register("gender")}/>
                     Мужской
                 </label>
                 <br/>
                 <label>
-                    <input type="radio" name="gender" value="f" {...register("gender")}/>
+                    <input type="radio" name="gender" value="1" {...register("gender")}/>
                     Женский
                 </label>
                 </div>
