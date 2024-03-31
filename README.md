@@ -2,6 +2,8 @@ This is a frontend app
 
 Backend on PHP: https://github.com/xyma8/lab_forms_backend_php
 
+Backend on Java Spring: https://github.com/xyma8/lab_forms_backend_spring
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
