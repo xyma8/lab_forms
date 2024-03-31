@@ -1,6 +1,7 @@
 import "./style.css"
 import { useForm } from "react-hook-form";
 import React, { useState } from 'react';
+import API from "../Utils/API";
 
 const LoginForm = ({ setLogin, onSuccess }) => {
     const {register, handleSubmit, formState: {errors} } = useForm({mode: 'onBlur'});
@@ -11,22 +12,43 @@ const LoginForm = ({ setLogin, onSuccess }) => {
         sendDataAuthorization(data);
     }
 
+    /*Old
     function sendDataAuthorization(data) {
-        fetch("http://formserver.ru/login/", {
+        fetch("http://localhost:8080/api/users/login", {
             method: 'POST',
-            header: {
+            headers: {
                 'Content-type' : 'application/json; charset=utf-8',
             },
             body: JSON.stringify(data)
         })
-        .then (response => response.json())
         .then (response => {
-            //console.log(response);
-            alert(response.message.message);
+            if(response.status == 401) {
+                throw new Error("Incorrect login or password");
+            }
+            else if(response.status != 200) {
+                throw new Error("Error");
+            }
+            return response.text();
+        })
+        .then(token =>{
+            console.log(token);
+            onSuccess(data.login, token);
+        })
+    }
+    */
 
-            if(response.status == 1) {
-                //console.log(response.message.token);
-                onSuccess(data.login, response.message.token);
+    function sendDataAuthorization(data) {
+        API.post("/users/login", data)
+        .then(response => {
+            onSuccess(data.login, response.data.token);
+        })
+        .catch(error =>{
+            console.error(error);
+            if(error.response.status == 401) {
+                alert("Incorrect login or password");
+            }
+            else if(error.response.status != 200) {
+                alert("Error");
             }
         })
     }

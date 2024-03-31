@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
+import API from "../Utils/API";
 
 const ContainerForm = ({onSuccess}) => {
     const {register, handleSubmit, formState: {errors}, getValues } = useForm({mode: 'onBlur'});
@@ -25,19 +26,12 @@ const ContainerForm = ({onSuccess}) => {
     }
 
     function sendDataRegistration(data) {
-        fetch("http://localhost:8080/api/users/signup", {
-            method: 'POST',
-            headers: {
-                'Content-type' : 'application/json; charset=utf-8',
-            },
-            body: JSON.stringify(data)
+        API.post("/users/signup", data)
+        .then(response => {
+            alert('Registration success!');
         })
-        .then (response => {
-            console.log(response.status);
-            if(response.status == 201) {
-                alert('Registration success!')
-            }
-            else if(response.status==409) {
+        .catch(error => {
+            if(error.response.status==409) {
                 alert("This login is already taken!");
             }
             else{
@@ -52,22 +46,16 @@ const ContainerForm = ({onSuccess}) => {
     }
 
     function checkCaptcha(val) {
-        fetch("http://localhost:8080/api/recaptcha", {
-            method: 'GET',
+        API.get("/recaptcha", {
             headers: {
-                'Content-type' : 'application/json; charset=utf-8',
-                'token': val
-            },
+                'TokenAuth': val
+            }
         })
-        .then (response => {
-            console.log(response)
-
-            if(response.status == 200){
-                setCaptcha(true);
-            }
-            else{
-                setCaptcha(false);
-            }
+        .then(response => {
+            setCaptcha(true);
+        })
+        .catch(error => {
+            setCaptcha(false);
         })
     }
 

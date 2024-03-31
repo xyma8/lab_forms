@@ -20,6 +20,7 @@ const LoginPage = () => {
 
     function successLogin(login, token) {
         console.log(login);
+        console.log(token);
         Cookies.set('token', token);
         navigate('/dashboard');
     }
