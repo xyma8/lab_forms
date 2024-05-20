@@ -32,10 +32,10 @@ const DashboardPage = ({login}) => {
             }
         })
         .then(response => {
-            if(response.data.theme == 0) {
+            if(response.data.darktheme == 0) {
                 setTheme('light');
             }
-            if(response.data.theme == 1) {
+            if(response.data.darktheme == 1) {
                 setTheme('dark');
             }
         })
@@ -50,13 +50,17 @@ const DashboardPage = ({login}) => {
     }
 
     function saveTheme() {
-        API.post("/users/theme/change", {token: Cookies.get('token')})
+        API.get("/users/theme/change", {
+            headers: {
+                'TokenAuth': Cookies.get('token')
+            }
+        })
         .then(response => {
-            console.log(response.data.theme);
-            if(response.data.theme == 0) {
+            console.log(response.data.darktheme);
+            if(response.data.darktheme == 0) {
                 setTheme('light');
             }
-            if(response.data.theme == 1) {
+            if(response.data.darktheme == 1) {
                 setTheme('dark');
             }
         })

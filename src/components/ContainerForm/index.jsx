@@ -18,9 +18,7 @@ const ContainerForm = ({onSuccess}) => {
             email: data.email,
             login: data.login,
             password: data.password,
-            gender: parseInt(data.gender),
-            darktheme: 0,
-            token: ""
+            gender: parseInt(data.gender)
         }
         sendDataRegistration(user_data);
     }
@@ -52,9 +50,11 @@ const ContainerForm = ({onSuccess}) => {
             }
         })
         .then(response => {
+            console.log("captcha success!!")
             setCaptcha(true);
         })
         .catch(error => {
+            console.log("error captcha")
             setCaptcha(false);
         })
     }
